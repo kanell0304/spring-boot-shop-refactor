@@ -1,0 +1,33 @@
+/** 약관동의 */
+.signupWrap{
+  display: flex;justify-content: center;align-items: center;padding:40px 0 200px;min-height: 800px;
+  h2{
+    margin-bottom: 20px;
+    span{font-size:var(--text-base);color: var(--placeholder);font-weight:300;letter-spacing: .06em;}
+  }
+  .signupSection{
+    display: flex;flex-direction: column;gap: 20px 0; width: 100%;max-width: 420px;
+    &.formSection{gap: 40px 0;}
+    .discriptionWrap .selectInputWrap{margin-bottom: 4px;}
+    .discription{
+      display: flex;flex-direction: column;gap: .8em 0;border: solid 1px var(--charcoal-grey);padding: 16px 19px;border-radius: 3px;height: 200px;overflow-y: auto;
+      strong{display: block;}
+      ul{display: flex;flex-direction: column;gap: .8em 0;}
+    }
+    >button{
+      margin-top: 40px;
+    }
+  }
+}
+
+/** 가입 정보입력 */
+
+
+/** 가입완료 */
+.complete{
+  display: flex;align-items: center;justify-content: center;min-height: 800px;
+  .completeTextbox{
+    display: flex;align-items: center;justify-content: center;flex-direction: column;text-align: center;gap:38px 0;
+    h2,h3{margin-bottom: 5px;}
+  }
+}

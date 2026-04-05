@@ -1,0 +1,70 @@
+.itemSidebar {width: 520px; flex: 0 0 520px;padding: 40px;
+    .innerSiedbarWrap{position: sticky;top:120px; right: 0;display: flex;flex-direction: column;align-items: end; height: calc(100vh - 160px);
+      .pageTitel{font-size: var(--h1);}
+      .searchBox {display: flex;gap: 10px;margin: 20px 0 40px;
+        input::placeholder {
+            text-align: right;
+        }
+      }
+      .categoryList{
+        li {text-align: end;margin-bottom: 10px;font-size: var(--h3);
+          a.active {text-decoration: underline;}
+        }
+      }
+      .paginationSection{display: flex; flex-direction: column; align-items: end; margin-top: auto;
+        .totalCount{font-size:var(--h4);font-weight: bold;}
+        .sortButtons{display: flex; gap: 10px;margin: 12px 0 6px;}
+      }
+
+
+    }
+  &.productDetail{
+    .sidebarInnerWrap{position: sticky;top:120px; right:0;}
+    .productMeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;
+      .productId{color: var(--placeholder);}
+      .actionButtons{display: flex; gap: 4px;}
+    }
+    
+    .productTitle{font-size: var(--h1);margin-bottom:4px;}
+
+    .priceSection{display: flex; gap: 8px; margin-bottom: 6px;
+      span{font-size:var(--h4);
+        &.priceOriginal,
+        &.priceDiscount{color: var(--placeholder);}
+        &.priceOriginal{text-decoration: line-through;}
+      }
+    }
+
+    .rating{margin-bottom: 40px;font-size:var(--h4)}
+
+    .mileage{margin-bottom: 10px;}
+
+    .optionGroup{display: flex; align-items: center;gap:8px;
+      .optionValues{display: flex; align-items: center;gap:8px;
+        button.btn{min-width: 48px;font-size:var(--text-small);padding:0.3em;
+          &.active{background-color: var(--slate-blue); border-color: var(--slate-blue);color: var(--ash-white);}
+        }
+      }
+    }
+
+    .selectedOptions{display: flex; flex-direction: column; gap: 10px; margin: 30px 0;
+      .selectedItem{border: solid 1px var(--charcoal-grey);border-radius: 3px;padding: 10px;font-size: 16px;
+        .optionInfo{margin-bottom: 5px; display: flex; gap: 14px; justify-content: space-between;}
+
+        .quantityControl{display: flex;align-items: center; gap: 6px;
+          .qtyBtn{font-size: 12px;background: var(--charcoal-grey);color: var(--ash-white);border-radius: 3px;width: 1.6em;height: 1.6em;padding: 0;display: flex;justify-content: center;align-items: center;
+          }
+        }
+        
+      }
+    }
+
+    .totalSection{display: flex;justify-content: space-between; gap: 10px; align-items: center;
+      .totalPrice{font-size: var(--h2);font-weight: normal;letter-spacing: -.02em;}
+    }
+
+    .payBtn{margin-top: 10px;
+      button.btn{width: 100%; font-size:16px; font-weight: bold;padding: 10px 20px;}
+    }
+  }
+}

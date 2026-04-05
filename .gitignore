@@ -1,0 +1,26 @@
+# Java
+*.class
+*.jar
+*.war
+*.log
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+
+upload/*
+!upload/.gitkeep
+
+# claude
+.claude

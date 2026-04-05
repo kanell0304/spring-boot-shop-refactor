@@ -1,0 +1,37 @@
+.orderContent{display: flex; flex-direction: column; width: 100%; max-width: 1600px; margin: 0 auto; gap: 40px;
+    .borderSection h3{font-size:var(--h5);margin-bottom: 18px;}
+    .selectRadioWrap{display: flex; align-items: center; gap: 10px; margin-bottom: 10px;}
+    .borderSection .inputTitle{font-size: var(--text-basic);margin-bottom: 4px;}
+    .formWrap{display: grid; gap: 20px;}
+    textarea{padding: 6px 8px;height: 150px;}
+    .bankInfo{
+        .bankInfotitle{display: block; font-weight: normal; font-size: var(--h5);}
+        .bankInfo{font-size: var(--h3);margin: 12px 0;}
+        ul{display: grid; gap: 6px;
+            li{
+                &::before{content: '•';}
+            }
+        }
+    }
+}
+.itemSidebar.order .innerSiedbarWrap{height: auto; align-items: normal;
+    .totalPriecInfo{margin-bottom: 20px;
+        >div{display: flex; gap:20px; justify-content: space-between; font-size: var(--h3);
+            strong{font-weight: normal;}
+        }
+        >div:first-of-type~div{
+            margin-top: 20px;
+        }
+    }
+    .totalPriec{display: flex; gap:20px; align-items: center; justify-content: space-between; font-size: var(--h3); border-top: 1px solid var(--charcoal-grey);padding: 20px 0;
+        span{font-size:var(h5);}
+    }
+
+}
+
+.odrCompleteWrap{
+    .completeTitle{text-align: center;margin: 40px 0;
+        p{font-size: var(--h5);margin-top: 20px;}
+    }
+    a.btn{max-width: 600px;margin: 0 auto;margin: 40px auto 100px;}
+}

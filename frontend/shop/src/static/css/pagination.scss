@@ -1,0 +1,9 @@
+.pagination{display: flex;gap:0 5px;
+    .pageNum{
+        display: flex;gap: 0 4px;
+    }
+
+    button{padding:10px 4px;
+        &.active{text-decoration:underline;}
+    }
+}

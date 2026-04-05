@@ -1,0 +1,8 @@
+rootProject.name = 'shop_project'
+
+// React (frontend)와 Spring (backend/shop)을 멀티모듈로 구성
+include 'frontend'
+include 'backend:shop'
+
+// backend/shop 폴더를 하나의 모듈로 명시적으로 지정
+project(':backend:shop').projectDir = file('backend/shop')

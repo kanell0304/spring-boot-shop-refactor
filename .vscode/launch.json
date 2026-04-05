@@ -1,0 +1,77 @@
+<<<<<<< HEAD
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "ShopApplication",
+      "request": "launch",
+      "mainClass": "ShopApplication",
+      "projectName": "shop"
+    },
+    {
+      "type": "java",
+      "name": "ShopApplication",
+      "request": "launch",
+      "mainClass": "com.shop.shop.ShopApplication",
+      "projectName": "shop"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+=======
+<<<<<<< HEAD
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "ShopApplication",
+      "request": "launch",
+      "mainClass": "com.shop.shop.ShopApplication",
+      "projectName": "shop"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+=======
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "ShopApplication",
+      "request": "launch",
+      "mainClass": "com.shop.shop.ShopApplication",
+      "projectName": "shop"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+>>>>>>> 6c80c21440fd34d348db1950f2af8e1e895ca51a
+>>>>>>> 1aec5635e8985c4d34fd114e4019b1bf57a93ae1
+}

@@ -1,0 +1,50 @@
+@use "@/static/css/_variables.scss" as *;
+
+.product{
+    /** 분류 추가 */
+    .categorySelectWrap{display: flex; 
+        .categorySelect {display: flex; gap: 10px; border-radius: 3px; align-items: flex-start;
+            .column{border: $boredrStyle;padding: 10px;width: 240px;
+                .btn{border: $boredrStyle;border-color: var(--placeholder); border-radius: 3px; width: 100%; justify-content: flex-start;
+                    &.selected{background-color: var(--ash-white);}
+                    &:first-of-type~.btn{margin-top: 5px;}
+                }
+            }
+        }
+        .selectedPath{margin-top: 10px; border: $boredrStyle;padding: 6px 10px; border-radius: 3px;}
+    }
+
+    /** 이미지 추가 */
+    .imageswrap{
+        .inputWrap{display: flex; gap: 20px;
+            .extraImages{display: flex; gap: 10px;}
+            .imagePreview,
+            .imagePlaceholder{position: relative; display: flex; align-items: center; justify-content: center; width: 245px; aspect-ratio: 3/4; border-radius: 3; border: solid 1px var(--slate-blue);cursor: pointer;}
+            .imagePlaceholder{border-style: dashed;}
+            .imagePreview{
+                img{width: 100%;height: 100%;object-fit: cover;}
+                .imagDelete{position: absolute; top:5px; right: 5px; display: block; align-items: center; justify-content: center; background-color: var(--white); width: 2em; aspect-ratio: 1;font-size: var(--small);}
+            }
+        }
+    }
+    /** 옵션 */
+    .optionWrap{
+        .inputBox{
+            input{max-width: 240px;}
+        }
+        .optionItemsWrap{display: flex;flex-direction: column;gap: 10px;margin-top:8px;
+            .optionItem{display: flex; align-items: center; gap: 10px;max-width: 800px;
+                &::before{display: block;content: '↳';font-size: var(--h5);}
+                span{display: block; font-size:var(--small-text); color: var(--placeholder);margin-bottom:0.2em;}
+                button{align-self: flex-end;}
+            }
+        }
+    }
+    /** 제조정보 */
+    .innerInput{
+        .inputWrap{margin-top: 10px;
+            .inputTitle{font-size:var(--basic-text)}
+        }
+        
+    }
+}

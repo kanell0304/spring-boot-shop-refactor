@@ -1,0 +1,38 @@
+.innerWrap.mypage {border-color: var(--charcoal-grey);}
+
+.mypageWrap{display: flex; flex: 1;
+    .myContainer{flex: 1;min-height: 800px;overflow: hidden;max-width: 1200px; margin: 0 auto;}
+    .myPageComponent{
+        display: flex;flex-direction: column;padding: 40px 0 100px;gap: 40px 0;
+        .pageTitle{font-size: var(--h3);}
+        .pageContainer{display: flex;flex-direction: column;gap: 40px 0;
+            /** 카테고리(분류) 관련*/
+            .categoryItemWrap{
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                min-height: 600px;border: solid 1px var(--charcoal-grey);border-radius: 3px;background-color: var(--ash-white);
+                .categoryItem{ display: flex;gap: 10px;padding: 10px;background-color: var(--white);border:solid 1px var(--charcoal-grey);border-radius: 3px; align-items: center;
+                    button{white-space: nowrap;position: relative;}
+                }
+                .childCategoryWrap{
+                    margin-top: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                    .childItem{position: relative;padding-left: 50px;}
+                    .categoryItem::before{display: block;content: "↳";font-size:24px;position: absolute;left: 10px;top:8px;}
+                }
+            }
+            /** 공통 필터버튼 */
+            .btnsWrap{display: flex;gap: 8px 18px;flex-wrap: wrap;
+                >div{display: flex; gap: 0 4px;}
+            }
+
+            
+        }
+    }
+    .itemSubMenu{display: flex; justify-content: space-between;}
+}
+
+

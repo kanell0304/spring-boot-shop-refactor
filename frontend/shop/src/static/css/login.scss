@@ -1,0 +1,87 @@
+.loginContainer {
+  display: flex;
+  >div{
+    flex: 1;
+  }
+}
+
+.imageBox {
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 40px;
+  .setting {
+    max-width: 420px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+}
+
+.text{
+    margin-bottom: 70px;
+    h2 {
+      font-size: var(--h2);
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    p {
+      margin-bottom: 40px;
+    }
+}
+
+.form{
+  margin-bottom: 13px;
+
+  .loginLabel {
+    font-size: var(--text-small);
+    font-weight: 300;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  input[type="email"]{
+    margin-bottom: 10px;
+  }
+
+  .loginLinks{
+    margin-top: 27px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    div{
+      text-align: center;
+      font-weight: bold;
+    }
+    .bigBtn.kakao{
+      color: var(--charcoal-grey);
+      background-color: #FFE551;
+    }
+  }
+}
+
+.findLinks{
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  color: var(--placeholder);
+  a{
+    color: var( --slate-blue);
+    text-decoration: underline;
+  }
+}

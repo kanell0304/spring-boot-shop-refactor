@@ -1,0 +1,25 @@
+.cartBox {padding: 40px;
+  h2 {margin-bottom: 20px;}
+}
+
+.membership {margin: 40px 0;
+  .membershipLevel {font-size: var(--h3);color: var(--slate-blue);font-weight: bold;}
+  p {font-size: var(--h5);}
+}
+
+.cartButtons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cartButtons .leftButtons{
+  display: flex;
+  gap: 10px;
+}
+
+.cartButtons .rightButtons{
+  display: flex;
+  gap: 10px;
+  margin-top: 80px;
+}
