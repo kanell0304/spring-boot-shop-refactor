@@ -14,13 +14,22 @@ build/
 *.iml
 out/
 
+# VS Code
+.vscode/
+
 # Node
 frontend/node_modules/
 frontend/dist/
 
-
+# Upload
 upload/*
 !upload/.gitkeep
 
-# claude
-.claude
+# 자동 생성된 빈 프로젝트 폴더
+untitled/
+
+# 백업 폴더
+backend/shop/backup/
+
+# Claude
+.claude/
