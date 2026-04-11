@@ -258,12 +258,12 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void updateMember(MemberDTO memberDTO) {
-        // 변경하려는 회원이 존재하는 여부
-        if (!existsByEmail(memberDTO.getEmail())) { // 회원이 존재 하지 않으면
+        // existsByEmail() + findByEmail() 두 번 조회하던 것을
+        // findByEmail() 한 번으로 합쳐서 null 체크로 존재 여부 확인
+        Member searchMember = memberRepository.findByEmail(memberDTO.getEmail());
+        if (searchMember == null) {
             throw new RuntimeException("회원을 찾을 수 없습니다.");
         }
-
-        Member searchMember = memberRepository.findByEmail(memberDTO.getEmail()); // 회원 번호를 기준으로 회원 조회
 
         searchMember.changePassword(memberDTO.getPassword());
         searchMember.changePhoneNumber(memberDTO.getPhoneNumber());

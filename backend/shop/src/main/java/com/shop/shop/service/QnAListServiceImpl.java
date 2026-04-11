@@ -5,7 +5,6 @@ import com.shop.shop.domain.list.QnAList;
 import com.shop.shop.domain.list.QnAListStatus;
 import com.shop.shop.domain.member.Member;
 import com.shop.shop.domain.member.MemberRole;
-import com.shop.shop.dto.OrderDTO;
 import com.shop.shop.dto.QnAListDTO;
 import com.shop.shop.repository.ItemRepository;
 import com.shop.shop.repository.MemberRepository;
@@ -160,22 +159,10 @@ public class QnAListServiceImpl implements QnAListService {
     }
 
     // 해당 질문글을 작성했는지 여부
+    // 기존: 전체 QnA 목록 조회 후 루프 탐색 (Long == 비교 버그 포함)
+    // 개선: 단일 EXISTS 쿼리로 즉시 확인 (Long 비교 버그도 함께 해결)
     @Override
     public boolean checkWritingStatus(Long memberId, Long qnaListId) {
-        List<QnAList> qnAList = qnAListRepository.findAllByMemberId(memberId);
-        if (qnAList == null || qnAList.isEmpty()) {
-            throw new RuntimeException("해당 회원의 질의응답 내역이 존재하지 않습니다.");
-        }
-        boolean checkStatus = false;
-        for (QnAList targetQnAList : qnAList) {
-            if (targetQnAList == null) {
-                throw new RuntimeException("주문 상품을 조회할 수 없습니다.");
-            } else {
-                if (targetQnAList.getId() == qnaListId) {
-                    checkStatus = true;
-                }
-            }
-        }
-        return checkStatus;
+        return qnAListRepository.existsByMemberIdAndQnaListId(memberId, qnaListId);
     }
 }

@@ -6,7 +6,6 @@ import com.shop.shop.domain.list.ReviewList;
 import com.shop.shop.domain.list.ScoreList;
 import com.shop.shop.domain.member.Member;
 import com.shop.shop.domain.member.MemberRole;
-import com.shop.shop.dto.OrderDTO;
 import com.shop.shop.dto.ReviewListDTO;
 import com.shop.shop.dto.ScoreListDTO;
 import com.shop.shop.repository.*;
@@ -112,25 +111,11 @@ public class ReviewListServiceImpl implements ReviewListService {
     }
 
     // 해당 상품을 구매한 적이 있는지 확인하는 메서드(회원Id, 상품Id를 기준으로)
+    // 기존: 전체 주문 목록 조회 후 루프 탐색 (N+1 + listIndex 고정 버그)
+    // 개선: 단일 EXISTS 쿼리로 즉시 확인
     @Override
     public boolean checkPurchaseStatus(Long memberId, Long itemId) {
-        List<OrderDTO> orderDTO = orderService.findAllByMemberId(memberId);
-        boolean checkStatus = false;
-        if (orderDTO == null || orderDTO.isEmpty()) {
-//            checkStatus = false;
-            throw new RuntimeException("해당 회원의 주문 내역이 존재하지 않습니다."); // 이 부분 회의 필요
-        }
-        int listIndex = 0;
-        for (OrderDTO targetOrder : orderDTO) {
-            if (targetOrder.getOrderItemList() == null || targetOrder.getOrderItemList().isEmpty()) {
-                throw new RuntimeException("주문 상품을 조회할 수 없습니다.");
-            } else {
-                if (targetOrder.getOrderItemList().get(listIndex).getItemId() == itemId) {
-                    checkStatus = true;
-                }
-            }
-        }
-        return checkStatus;
+        return orderService.existsPurchase(memberId, itemId);
     }
 
     // 특정 리뷰 리스트 조회
@@ -151,11 +136,9 @@ public class ReviewListServiceImpl implements ReviewListService {
         if (reviewListPage == null || reviewListPage.isEmpty()) {
             throw new RuntimeException("조회된 리뷰 리스트가 없습니다.");
         }
-
-        return reviewListPage.map(review -> {
-            List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
-            return new ReviewListDTO(reviewImageList, review);
-        });
+        // Repository의 @EntityGraph(attributePaths = "images") 로 이미지가 이미 로딩됨
+        // review.getImages() 로 추가 DB 조회 없이 바로 사용
+        return reviewListPage.map(review -> new ReviewListDTO(review.getImages(), review));
     }
 
     // 리뷰 리스트 + 이미지 모두 조회(페이징) 삭제 미포함
@@ -165,10 +148,8 @@ public class ReviewListServiceImpl implements ReviewListService {
         if (reviewListPage == null || reviewListPage.isEmpty()) {
             throw new RuntimeException("조회된 리뷰 리스트가 없습니다.");
         }
-        return reviewListPage.map(review -> {
-            List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
-            return new ReviewListDTO(reviewImageList, review);
-        });
+        // Repository의 @EntityGraph(attributePaths = "images") 로 이미지가 이미 로딩됨
+        return reviewListPage.map(review -> new ReviewListDTO(review.getImages(), review));
     }
 
     // 상품Id를 기준으로 리뷰 리스트 + 이미지 모두 조회(페이징) 삭제 포함
@@ -178,10 +159,8 @@ public class ReviewListServiceImpl implements ReviewListService {
         if (reviewListPage == null || reviewListPage.isEmpty()) {
             throw new RuntimeException("조회된 리뷰 리스트가 없습니다.");
         }
-        return reviewListPage.map(review -> {
-            List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
-            return new ReviewListDTO(reviewImageList, review);
-        });
+        // Repository의 @EntityGraph(attributePaths = "images") 로 이미지가 이미 로딩됨
+        return reviewListPage.map(review -> new ReviewListDTO(review.getImages(), review));
     }
 
     // 상품Id를 기준으로 리뷰 리스트 + 이미지 모두 조회(페이징) 삭제 미포함
@@ -191,10 +170,8 @@ public class ReviewListServiceImpl implements ReviewListService {
         if (reviewListPage == null || reviewListPage.isEmpty()) {
             throw new RuntimeException("조회된 리뷰 리스트가 없습니다.");
         }
-        return reviewListPage.map(review -> {
-            List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
-            return new ReviewListDTO(reviewImageList, review);
-        });
+        // Repository의 @EntityGraph(attributePaths = "images") 로 이미지가 이미 로딩됨
+        return reviewListPage.map(review -> new ReviewListDTO(review.getImages(), review));
     }
 
     // 리뷰 리스트 수정

@@ -46,4 +46,8 @@ public interface QnAListRepository extends JpaRepository<QnAList, Long> {
     @Query("SELECT ql FROM QnAList ql WHERE ql.member.id = :memberId")
     List<QnAList> findAllByMemberId(@Param("memberId") Long memberId);
 
+    // 회원Id와 질의응답Id를 기준으로 작성자 여부 확인 (작성/수정 권한 체크용)
+    @Query("SELECT COUNT(ql) > 0 FROM QnAList ql WHERE ql.member.id = :memberId AND ql.id = :qnaListId")
+    boolean existsByMemberIdAndQnaListId(@Param("memberId") Long memberId, @Param("qnaListId") Long qnaListId);
+
 }

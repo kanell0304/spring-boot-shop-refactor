@@ -131,12 +131,11 @@ public class ItemServiceImpl implements ItemService {
     // 1개 데이터 조회 - 아이템+이미지+인포+옵션
     @Override
     public ItemDTO getOne(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다. ID: " + id));
-
-        // 개별적으로 연관 데이터를 가져옴
-        List<ItemImage> images = itemImageRepository.findByItemId(id);
-        List<ItemOption> options = itemOptionRepository.findByItemId(id);
-        return new ItemDTO(item, images, options, item.getInfo());
+        // 기존: findById + 이미지/옵션/인포 각각 별도 쿼리 = 총 4번
+        // 개선: EntityGraph 로 연관 데이터를 한 번에 로딩 후 엔티티 컬렉션 직접 사용
+        Item item = itemRepository.findWithDetailsById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다. ID: " + id));
+        return new ItemDTO(item, item.getImages(), item.getOptions(), item.getInfo());
     }
 
     // 이미지만 조회

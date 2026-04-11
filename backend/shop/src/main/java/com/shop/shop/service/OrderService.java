@@ -23,5 +23,6 @@ public interface OrderService {
     public OrderDTO editOrder(OrderDTO orderDTO);
     public OrderDTO editOrderStatus(OrderDTO orderDTO);
     public void deleteOrder(Long orderId);
+    public boolean existsPurchase(Long memberId, Long itemId);
 
 }

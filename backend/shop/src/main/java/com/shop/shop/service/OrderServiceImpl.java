@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -136,9 +137,9 @@ public class OrderServiceImpl implements OrderService {
         createMileageByMemberShip(addMileageAmount, member, order, MileageStatus.NO_REDEEM);
 
         // 마일리지 상태가 REDEEM(사용)이라면
+        // 메서드 상단(42번 줄)에서 이미 조회한 member 객체를 재사용 (동일 memberId로 재조회 불필요)
         if (orderDTO.getMileageStatus() == MileageStatus.REDEEM) {
-            Member memberMileage = memberRepository.findById(orderDTO.getMemberId()).orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
-            if (orderDTO.getUsingMileage() <= memberMileage.getStockMileage()) {
+            if (orderDTO.getUsingMileage() <= member.getStockMileage()) {
                 createMileageByMemberShip(orderDTO.getUsingMileage(), member, order, MileageStatus.REDEEM);
             } else {
                 throw new RuntimeException("마일리지 보유량이 부족합니다.");
@@ -191,10 +192,13 @@ public class OrderServiceImpl implements OrderService {
         if (orderPage == null || orderPage.isEmpty()) {
             throw new RuntimeException("조회된 주문내역이 없습니다.");
         }
-        return orderPage.map(order -> {
-            List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-            return new OrderDTO(order, items);
-        });
+        // 페이지에 담긴 주문 id 목록을 한 번에 추출하여 주문상품을 1번의 쿼리로 일괄 조회
+        List<Long> orderIds = orderPage.getContent().stream()
+                .map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return orderPage.map(order ->
+                new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())));
     }
 
     // 주문Id를 기준으로 주문 상세 조회
@@ -222,10 +226,12 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("해당 회원의 주문이 존재하지 않습니다.");
         }
 
-        return orderList.stream().map(order -> {
-                    List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-                    return new OrderDTO(order, items);
-                }).collect(Collectors.toList());
+        List<Long> orderIds = orderList.stream().map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return orderList.stream()
+                .map(order -> new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())))
+                .collect(Collectors.toList());
     }
 
     // 회원Id를 기준으로 주문 모두 조회(페이징)
@@ -238,10 +244,11 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("해당 회원의 주문이 존재하지 않습니다.");
         }
 
-        return orderList.map(order -> {
-            List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-            return new OrderDTO(order, items);
-        });
+        List<Long> orderIds = orderList.getContent().stream().map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return orderList.map(order ->
+                new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())));
     }
 
     // 배송Id를 기준으로 주문 내역 조회
@@ -262,10 +269,12 @@ public class OrderServiceImpl implements OrderService {
         if (duringPeriodList == null || duringPeriodList.isEmpty()) {
             throw new RuntimeException("해당 기간동안 조회되는 데이터가 없습니다.");
         }
-        return duringPeriodList.stream().map(order -> {
-            List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-            return new OrderDTO(order, items);
-        }).collect(Collectors.toList());
+        List<Long> orderIds = duringPeriodList.stream().map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return duringPeriodList.stream()
+                .map(order -> new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())))
+                .collect(Collectors.toList());
     }
 
     // 특정 기간동안 데이터 조회(페이징)
@@ -275,10 +284,11 @@ public class OrderServiceImpl implements OrderService {
         if (duringPeriodList == null || duringPeriodList.isEmpty()) {
             throw new RuntimeException("해당 기간동안 조회되는 데이터가 없습니다.");
         }
-        return duringPeriodList.map(order -> {
-            List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-            return new OrderDTO(order, items);
-        });
+        List<Long> orderIds = duringPeriodList.getContent().stream().map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return duringPeriodList.map(order ->
+                new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())));
     }
 
     // 특정 기간동안 특정회원의 데이터 조회
@@ -288,10 +298,12 @@ public class OrderServiceImpl implements OrderService {
         if (duringPeriodFromMemberEmail == null || duringPeriodFromMemberEmail.isEmpty()) {
             throw new RuntimeException("해당 회뭔의 해당 기간동안 조회되는 데이터가 없습니다.");
         }
-        return duringPeriodFromMemberEmail.stream().map(order -> {
-            List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-            return new OrderDTO(order, items);
-        }).collect(Collectors.toList());
+        List<Long> orderIds = duringPeriodFromMemberEmail.stream().map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return duringPeriodFromMemberEmail.stream()
+                .map(order -> new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())))
+                .collect(Collectors.toList());
     }
 
     // 특정 기간동안 특정회원의 데이터 조회(페이징)
@@ -301,10 +313,11 @@ public class OrderServiceImpl implements OrderService {
         if (duringPeriodFromMemberEmail == null || duringPeriodFromMemberEmail.isEmpty()) {
             throw new RuntimeException("해당 회뭔의 해당 기간동안 조회되는 데이터가 없습니다.");
         }
-        return duringPeriodFromMemberEmail.map(order -> {
-            List<OrderItem> items = orderItemRepository.findByOrderId(order.getId());
-            return new OrderDTO(order, items);
-        });
+        List<Long> orderIds = duringPeriodFromMemberEmail.getContent().stream().map(Order::getId).collect(Collectors.toList());
+        Map<Long, List<OrderItem>> itemsByOrderId = orderItemRepository.findByOrderIds(orderIds)
+                .stream().collect(Collectors.groupingBy(oi -> oi.getOrder().getId()));
+        return duringPeriodFromMemberEmail.map(order ->
+                new OrderDTO(order, itemsByOrderId.getOrDefault(order.getId(), List.of())));
     }
 
     // 배송지 수정
@@ -341,5 +354,11 @@ public class OrderServiceImpl implements OrderService {
         Order deleteOrder = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("해당 주문을 찾을 수 없습니다."));
         deleteOrder.changeDelFlag(true);
         orderRepository.save(deleteOrder);
+    }
+
+    // 회원Id와 상품Id를 기준으로 구매 이력 존재 여부 확인 (단일 쿼리)
+    @Override
+    public boolean existsPurchase(Long memberId, Long itemId) {
+        return orderItemRepository.existsByMemberIdAndItemId(memberId, itemId);
     }
 }

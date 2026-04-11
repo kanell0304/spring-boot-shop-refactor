@@ -27,6 +27,14 @@ public interface MileageRepository extends JpaRepository<Mileage, Long> {
     @Query("SELECT m FROM Mileage m WHERE m.member.id = :memberId ORDER BY m.id DESC")
     public Page<Mileage> findAllByMemberId(Pageable pageable, @Param("memberId") Long memberId);
 
+    // 회원Email을 기준으로 마일리지 내역 모두 조회 (Member 엔티티 선조회 없이 직접 조회)
+    @Query("SELECT m FROM Mileage m WHERE m.member.email = :email ORDER BY m.id DESC")
+    public List<Mileage> findAllByMemberEmail(@Param("email") String email);
+
+    // 회원Email을 기준으로 마일리지 내역 모두 조회(페이징) (Member 엔티티 선조회 없이 직접 조회)
+    @Query("SELECT m FROM Mileage m WHERE m.member.email = :email ORDER BY m.id DESC")
+    public Page<Mileage> findAllByMemberEmail(Pageable pageable, @Param("email") String email);
+
     // 주문Id를 기준으로 마일리지 내역 모두 조회
     @Query("SELECT m FROM Mileage m WHERE m.order.id = :orderId ORDER BY m.id DESC")
     public List<Mileage> findAllByOrderId(@Param("orderId") Long orderId);

@@ -2,7 +2,6 @@ package com.shop.shop.service;
 
 import com.shop.shop.domain.member.Member;
 import com.shop.shop.domain.member.Mileage;
-import com.shop.shop.domain.member.MileageStatus;
 import com.shop.shop.domain.order.Order;
 import com.shop.shop.dto.MileageDTO;
 import com.shop.shop.repository.MemberRepository;
@@ -36,8 +35,8 @@ public class MileageServiceImpl implements MileageService {
     // 회원Id를 기준으로 마일리지 내역 전부 조회
     @Override
     public List<MileageDTO> findAllByMemberId(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
-        List<Mileage> mileageList = mileageRepository.findAllByMemberId(member.getId());
+        // Member 엔티티 전체를 선조회할 필요 없이 파라미터 memberId 를 직접 사용
+        List<Mileage> mileageList = mileageRepository.findAllByMemberId(memberId);
         if (mileageList == null || mileageList.isEmpty()) {
             throw new RuntimeException("해당 회원의 마일리지 내역이 존재하지 않습니다.");
         }
@@ -47,8 +46,8 @@ public class MileageServiceImpl implements MileageService {
     // 회원Id를 기준으로 마일리지 내역 전부 조회(페이징)
     @Override
     public Page<MileageDTO> findAllByMemberId(Pageable pageable, Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
-        Page<Mileage> mileageList = mileageRepository.findAllByMemberId(pageable, member.getId());
+        // Member 엔티티 전체를 선조회할 필요 없이 파라미터 memberId 를 직접 사용
+        Page<Mileage> mileageList = mileageRepository.findAllByMemberId(pageable, memberId);
         if (mileageList == null || mileageList.isEmpty()) {
             throw new RuntimeException("해당 회원의 마일리지 내역이 존재하지 않습니다.");
         }
@@ -58,11 +57,8 @@ public class MileageServiceImpl implements MileageService {
     // 회원Email 을 기준으로 마일리지 내역 전부 조회
     @Override
     public List<MileageDTO> findAllByMemberEmail(String email) {
-        Member member = memberRepository.findByEmail(email);
-        if (member == null) {
-            throw new RuntimeException("해당 회원을 찾을 수 없습니다.");
-        }
-        List<Mileage> mileageList = mileageRepository.findAllByMemberId(member.getId());
+        // Member 엔티티를 경유하지 않고 email 로 마일리지를 직접 조회
+        List<Mileage> mileageList = mileageRepository.findAllByMemberEmail(email);
         if (mileageList == null || mileageList.isEmpty()) {
             throw new RuntimeException("해당 회원의 마일리지 내역이 존재하지 않습니다.");
         }
@@ -72,11 +68,8 @@ public class MileageServiceImpl implements MileageService {
     // 회원Email 을 기준으로 마일리지 내역 전부 조회(페이징)
     @Override
     public Page<MileageDTO> findAllByMemberEmail(Pageable pageable, String email) {
-        Member member = memberRepository.findByEmail(email);
-        if (member == null) {
-            throw new RuntimeException("해당 회원을 찾을 수 없습니다.");
-        }
-        Page<Mileage> mileageList = mileageRepository.findAllByMemberId(pageable, member.getId());
+        // Member 엔티티를 경유하지 않고 email 로 마일리지를 직접 조회
+        Page<Mileage> mileageList = mileageRepository.findAllByMemberEmail(pageable, email);
         if (mileageList == null || mileageList.isEmpty()) {
             throw new RuntimeException("해당 회원의 마일리지 내역이 존재하지 않습니다.");
         }
@@ -86,8 +79,8 @@ public class MileageServiceImpl implements MileageService {
     // 주문Id를 기준으로 마일리지 내역 전부 조회
     @Override
     public List<MileageDTO> findAllByOrderId(Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("해당 주문을 찾을 수 없습니다."));
-        List<Mileage> mileageList = mileageRepository.findAllByOrderId(order.getId());
+        // Order 엔티티 전체를 선조회할 필요 없이 파라미터 orderId 를 직접 사용
+        List<Mileage> mileageList = mileageRepository.findAllByOrderId(orderId);
         if (mileageList == null || mileageList.isEmpty()) {
             throw new RuntimeException("해당 주문의 마일리지 내역이 존재하지 않습니다.");
         }
@@ -97,8 +90,8 @@ public class MileageServiceImpl implements MileageService {
     // 주문Id를 기준으로 마일리지 내역 전부 조회(페이징)
     @Override
     public Page<MileageDTO> findAllByOrderId(Pageable pageable, Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("해당 주문을 찾을 수 없습니다."));
-        Page<Mileage> mileageList = mileageRepository.findAllByOrderId(pageable, order.getId());
+        // Order 엔티티 전체를 선조회할 필요 없이 파라미터 orderId 를 직접 사용
+        Page<Mileage> mileageList = mileageRepository.findAllByOrderId(pageable, orderId);
         if (mileageList == null || mileageList.isEmpty()) {
             throw new RuntimeException("해당 주문의 마일리지 내역이 존재하지 않습니다.");
         }
