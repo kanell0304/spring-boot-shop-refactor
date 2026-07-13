@@ -20,6 +20,7 @@ out/
 # Node
 frontend/node_modules/
 frontend/dist/
+node_modules/
 
 # Upload
 upload/*
