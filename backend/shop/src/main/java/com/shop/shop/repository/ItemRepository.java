@@ -25,7 +25,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     // 단일 상품 상세 조회 - images EntityGraph JOIN + options/info Hibernate 보조 SELECT
     // 여러 @OneToMany List 를 동시에 JOIN 하면 카테시안 곱 문제가 생기므로
     // images 만 EntityGraph 로 처리하고 나머지는 getOptions(), getInfo() 로 접근
-    @EntityGraph(attributePaths = {"images", "options", "info"})
+    @EntityGraph(attributePaths = {"images"})
     @Query("SELECT i FROM Item i WHERE i.id = :id")
     java.util.Optional<Item> findWithDetailsById(@Param("id") Long id);
 

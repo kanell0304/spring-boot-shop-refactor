@@ -54,7 +54,6 @@ public class ItemController {
             return ResponseEntity.ok(itemDTO);
         } catch (IllegalArgumentException e) {
             // 404 error
-            Long itemId = itemService.getOne(id).getId();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("result", "fail", "error", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("result", "fail", "error", e.getMessage()));

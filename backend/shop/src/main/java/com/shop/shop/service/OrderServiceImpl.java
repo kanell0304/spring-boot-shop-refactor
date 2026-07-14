@@ -95,7 +95,6 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order); // order의 id가 생성된 후에 orderItem 저장 가능
 
         // 카트의 상품을 주문 상품 리스트에 추가
-        int totalAmount = 0;
         int totalDiscountAmount = 0;
         List<OrderItem> orderItemList = new ArrayList<>();
         for (Cart cart : cartList) {
@@ -111,7 +110,6 @@ public class OrderServiceImpl implements OrderService {
             OrderItem savedOrderItem = orderItemRepository.save(orderItem);
             orderItem.getItemOption().removeStock(cart.getQty());
             orderItemList.add(savedOrderItem);
-            totalAmount += cart.getItemOption().getOptionPrice() * cart.getQty();
             totalDiscountAmount += ((int)((float)((cart.getItem().getPrice() + cart.getItemOption().getOptionPrice()) * cart.getQty()) * (1 - ((float)cart.getItem().getDiscountRate() / 100))));
         }
         if (totalDiscountAmount < 100000) { // 최종 결제 금액이 100,000원보다 적을 경우

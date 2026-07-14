@@ -40,11 +40,16 @@ const ProductDetailComponent = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [imgSave , setImgSave] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setError(null);
     getProductById(productId).then((res) => {
       setProduct(res);
-    });  
+    }).catch((err) => {
+      console.error("상품 조회 실패:", err);
+      setError("상품 정보를 불러오지 못했습니다.");
+    });
   }, [productId,memberInfo]);
 
   useEffect(() => {
@@ -63,12 +68,16 @@ const ProductDetailComponent = () => {
   // console.log('product : '+product)
   // console.log('memberInfo:'+memberInfo.id)
 
+  if (error) {
+    return <div className="rightNavLayoutContainer"><p className="errorMessage">{error}</p></div>;
+  }
+
   return (
     <>
     <div className="rightNavLayoutContainer">
       <div className="productDetailContainer">
         <div className="productImages">
-          {product?.uploadFileNames.length > 0 ? (
+          {product?.uploadFileNames?.length > 0 ? (
             <Swiper
               // install Swiper modules
               modules={[Scrollbar]}

@@ -221,8 +221,8 @@ const CartPage = () => {
   const rate = rateMap[memberInfo.memberShip] || 0;
 
   const totalPrice = cartItems.reduce((sum, item) => {
-    const itemTotalPrice = (item.itemPrice + item.optionPrice) * item.qty;
-    return sum + itemTotalPrice;
+    const dcPrice = Math.floor((item.itemPrice + item.optionPrice) * (1 - item.discountRate / 100));
+    return sum + (dcPrice * item.qty);
   }, 0);
 
   return (
@@ -256,7 +256,7 @@ const CartPage = () => {
               <tbody className="itemTbody">
                 {cartItems?.length > 0 ? (
                   cartItems.map((item) => {
-                    const dcPrice = Math.floor(item.itemPrice * (1 - item.discountRate / 100));
+                    const dcPrice = Math.floor((item.itemPrice + item.optionPrice) * (1 - item.discountRate / 100));
                     return (
                       <tr className="itemTr" key={item.cartId}>
                         <td className="itemNumber">
@@ -286,9 +286,9 @@ const CartPage = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="itemPriceInfo">{addComma(dcPrice + item.optionPrice)}원</td>
-                        <td className="itemPriceInfo">{addComma((dcPrice + item.optionPrice) * item.qty)}원</td>
-                        <td className="itemPriceInfo">{(((dcPrice + item.optionPrice) * item.qty) * rate).toLocaleString()}원</td>
+                        <td className="itemPriceInfo">{addComma(dcPrice)}원</td>
+                        <td className="itemPriceInfo">{addComma(dcPrice * item.qty)}원</td>
+                        <td className="itemPriceInfo">{((dcPrice * item.qty) * rate).toLocaleString()}원</td>
                         <td className="itemWriter">
                           <button onClick={() => handleAddToWishlist(item.itemId)}>관심상품 등록</button>
                           <button onClick={() => handleRemoveItem(item.cartId)}>카트에서 삭제</button>

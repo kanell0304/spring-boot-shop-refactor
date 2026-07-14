@@ -114,8 +114,8 @@ const OrderComponent = ({ memberInfo }) => {
   };
 
   const totalItemAmount = cartItems.reduce((sum, item) => {
-    const dcPrice = Math.floor(item.itemPrice * (1 - item.discountRate / 100));
-    return sum + (dcPrice + item.optionPrice) * item.qty;
+    const dcPrice = Math.floor((item.itemPrice + item.optionPrice) * (1 - item.discountRate / 100));
+    return sum + dcPrice * item.qty;
   }, 0);
 
   const shippingFee = totalItemAmount >= 100000 ? 0 : 3000;
@@ -180,7 +180,7 @@ const OrderComponent = ({ memberInfo }) => {
                 </thead>
                 <tbody className="itemTbody">
                   {cartItems.map((item, idx) =>{
-                  const dcPrice = Math.floor(item.itemPrice * (1 - item.discountRate / 100));
+                  const dcPrice = Math.floor((item.itemPrice + item.optionPrice) * (1 - item.discountRate / 100));
                     return(
                     <tr className="itemTr" key={idx}>
                       <td className="itemInfo">
@@ -193,9 +193,9 @@ const OrderComponent = ({ memberInfo }) => {
                           <p>{item.optionName} : {item.optionValue} (수량 : {item.qty})</p>
                         </div>
                       </td>
-                      <td className="itemPriceInfo">{addComma((dcPrice + item.optionPrice))}원</td>
-                      <td className="itemPriceInfo">{addComma(((dcPrice + item.optionPrice) * item.qty))}원</td>
-                      <td className="itemPriceInfo">{(((dcPrice + item.optionPrice) * item.qty) * rate).toLocaleString()}원</td>
+                      <td className="itemPriceInfo">{addComma(dcPrice)}원</td>
+                      <td className="itemPriceInfo">{addComma(dcPrice * item.qty)}원</td>
+                      <td className="itemPriceInfo">{((dcPrice * item.qty) * rate).toLocaleString()}원</td>
                     </tr>
                   )})}
                 </tbody>

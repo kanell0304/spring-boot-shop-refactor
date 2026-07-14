@@ -13,9 +13,14 @@ const SidebarDetailComponent = () => {
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [mileage, setMileage] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getProductById(productId).then(setProduct);
+    setError(null);
+    getProductById(productId).then(setProduct).catch((err) => {
+      console.error("상품 조회 실패:", err);
+      setError("상품 정보를 불러오지 못했습니다.");
+    });
     getItemOptions(productId).then(setOptions).catch(() => setOptions([]));
   }, [productId]);
 
@@ -50,9 +55,9 @@ const SidebarDetailComponent = () => {
 
   const calculateTotal = () => {
     if (!product) return 0;
-    const basePrice = Math.floor(product.price * (1 - product.discountRate / 100));
     return selectedOptions.reduce((sum, option) => {
-      return sum + ((basePrice + option.optionPrice) * option.quantity);
+      const dcPrice = Math.floor((product.price + option.optionPrice) * (1 - product.discountRate / 100));
+      return sum + (dcPrice * option.quantity);
     }, 0);
   };
 
@@ -87,6 +92,7 @@ const SidebarDetailComponent = () => {
   };
 
 
+  if (error) return <div className="itemSidebar">{error}</div>;
   if (!product) return <div className="itemSidebar">Loading...</div>;
   const formatted = getFormattedPrice(product.price, product.discountRate);
   const uniqueOptionNames = [...new Set(options.map(o => o.optionName))];
@@ -143,8 +149,8 @@ const SidebarDetailComponent = () => {
 
         <div className="selectedOptions">
           {selectedOptions.map(option => {
-            const dcPrice = Math.floor(product.price * (1 - product.discountRate / 100));
-            const total = (dcPrice + option.optionPrice) * option.quantity;
+            const dcPrice = Math.floor((product.price + option.optionPrice) * (1 - product.discountRate / 100));
+            const total = dcPrice * option.quantity;
             return (
               <div className="selectedItem" key={option.optionId}>
                 <div className="optionInfo">
